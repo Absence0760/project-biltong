@@ -1,18 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Thong Biltong — cartoon bull in a thong">
   <!-- grounding shadow -->
-  <ellipse cx="100" cy="178" rx="58" ry="6" fill="#2a1a10" opacity="0.18"/>
+  <ellipse cx="94" cy="178" rx="68" ry="6" fill="#2a1a10" opacity="0.18"/>
 
-  <!-- rear leg -->
-  <rect x="118" y="130" width="14" height="42" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
-  <ellipse cx="125" cy="174" rx="10" ry="5" fill="#2a1a10"/>
+  <!-- front-right leg (anchored between the back legs, stepping forward-left through the pivot) -->
+  <path d="M122 130 L134 130 L72 172 L60 172 Z" fill="#c9a27a" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="66" cy="174" rx="10" ry="5" fill="#2a1a10"/>
 
-  <!-- front leg -->
-  <rect x="60" y="130" width="14" height="42" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
-  <ellipse cx="67" cy="174" rx="10" ry="5" fill="#2a1a10"/>
+  <!-- back-left leg -->
+  <rect x="104" y="130" width="14" height="42" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
+  <ellipse cx="111" cy="174" rx="10" ry="5" fill="#2a1a10"/>
 
-  <!-- tail -->
-  <path d="M158 108 Q176 108 172 128 Q168 140 162 134" fill="none" stroke="#2a1a10" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="163" cy="134" r="5" fill="#2a1a10"/>
+  <!-- back-right leg -->
+  <rect x="140" y="130" width="14" height="42" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
+  <ellipse cx="147" cy="174" rx="10" ry="5" fill="#2a1a10"/>
+
+  <!-- front-left leg (stepping out to the left, mid-pivot) -->
+  <path d="M46 130 L60 130 L48 172 L34 172 Z" fill="#c9a27a" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="41" cy="174" rx="10" ry="5" fill="#2a1a10"/>
 
   <!-- body -->
   <ellipse cx="100" cy="114" rx="56" ry="32" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
@@ -20,11 +24,18 @@
   <!-- belly shading -->
   <ellipse cx="100" cy="128" rx="40" ry="12" fill="#b78857" opacity="0.55"/>
 
-  <!-- thong (a cheeky red triangle + waistband) -->
-  <path d="M72 108 L128 108 L118 146 Q100 152 82 146 Z" fill="#c93434" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
-  <rect x="68" y="104" width="64" height="7" rx="3" fill="#c93434" stroke="#2a1a10" stroke-width="3"/>
+  <!-- butt crack (at the rear, between the cheeks) -->
+  <path d="M129 98 Q130 104 129 110" fill="none" stroke="#8a5a2a" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- tail (emerges from the butt crack at the rear, arcs up and out) -->
+  <path d="M129 96 Q146 74 164 80 Q176 92 170 104" fill="none" stroke="#2a1a10" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="170" cy="104" r="5" fill="#2a1a10"/>
+
+  <!-- thong (waistband across the rump, triangle hanging between the back legs) -->
+  <path d="M115 108 L143 108 L134 156 Q129 160 124 156 Z" fill="#c93434" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="104" y="104" width="50" height="7" rx="3" fill="#c93434" stroke="#2a1a10" stroke-width="3"/>
   <!-- thong highlight -->
-  <path d="M88 112 Q100 120 112 112" fill="none" stroke="#ffb3b3" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <path d="M120 116 Q129 122 138 116" fill="none" stroke="#ffb3b3" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
 
   <!-- head -->
   <ellipse cx="52" cy="76" rx="30" ry="28" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
