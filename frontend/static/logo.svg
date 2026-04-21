@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Thong Biltong — cartoon bull in a thong">
+  <!-- grounding shadow -->
+  <ellipse cx="100" cy="178" rx="58" ry="6" fill="#2a1a10" opacity="0.18"/>
+
+  <!-- rear leg -->
+  <rect x="118" y="130" width="14" height="42" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
+  <ellipse cx="125" cy="174" rx="10" ry="5" fill="#2a1a10"/>
+
+  <!-- front leg -->
+  <rect x="60" y="130" width="14" height="42" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
+  <ellipse cx="67" cy="174" rx="10" ry="5" fill="#2a1a10"/>
+
+  <!-- tail -->
+  <path d="M158 108 Q176 108 172 128 Q168 140 162 134" fill="none" stroke="#2a1a10" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="163" cy="134" r="5" fill="#2a1a10"/>
+
+  <!-- body -->
+  <ellipse cx="100" cy="114" rx="56" ry="32" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
+
+  <!-- belly shading -->
+  <ellipse cx="100" cy="128" rx="40" ry="12" fill="#b78857" opacity="0.55"/>
+
+  <!-- thong (a cheeky red triangle + waistband) -->
+  <path d="M72 108 L128 108 L118 146 Q100 152 82 146 Z" fill="#c93434" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="68" y="104" width="64" height="7" rx="3" fill="#c93434" stroke="#2a1a10" stroke-width="3"/>
+  <!-- thong highlight -->
+  <path d="M88 112 Q100 120 112 112" fill="none" stroke="#ffb3b3" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- head -->
+  <ellipse cx="52" cy="76" rx="30" ry="28" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
+
+  <!-- horns -->
+  <path d="M28 64 Q16 48 22 40 Q34 48 40 62 Z" fill="#f6f4ee" stroke="#2a1a10" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M76 64 Q88 48 82 40 Q70 48 64 62 Z" fill="#f6f4ee" stroke="#2a1a10" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- tuft of hair -->
+  <path d="M44 50 Q52 40 60 50 Q56 48 52 52 Q48 48 44 50 Z" fill="#2a1a10"/>
+
+  <!-- ears -->
+  <ellipse cx="24" cy="72" rx="8" ry="5" transform="rotate(-30 24 72)" fill="#a87a52" stroke="#2a1a10" stroke-width="2"/>
+  <ellipse cx="80" cy="72" rx="8" ry="5" transform="rotate(30 80 72)" fill="#a87a52" stroke="#2a1a10" stroke-width="2"/>
+
+  <!-- snout -->
+  <ellipse cx="52" cy="88" rx="18" ry="12" fill="#a87a52" stroke="#2a1a10" stroke-width="2.5"/>
+  <ellipse cx="46" cy="89" rx="2.2" ry="3" fill="#2a1a10"/>
+  <ellipse cx="58" cy="89" rx="2.2" ry="3" fill="#2a1a10"/>
+
+  <!-- nose ring (cheeky accent) -->
+  <circle cx="52" cy="96" r="4" fill="none" stroke="#d4a24a" stroke-width="2"/>
+
+  <!-- eyes with a wink -->
+  <circle cx="42" cy="68" r="3" fill="#2a1a10"/>
+  <path d="M58 68 Q62 64 66 68" fill="none" stroke="#2a1a10" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- eyebrow (tiny attitude) -->
+  <path d="M38 60 Q42 58 46 60" fill="none" stroke="#2a1a10" stroke-width="2" stroke-linecap="round"/>
+</svg>
