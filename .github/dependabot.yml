@@ -104,6 +104,21 @@ updates:
           - "patch"
 
   # ---------------------------------------------------------------------------
+  # Terraform providers
+  # ---------------------------------------------------------------------------
+  - package-ecosystem: "terraform"
+    directory: "/infra"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Africa/Johannesburg"
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: "chore(infra)"
+      include: "scope"
+
+  # ---------------------------------------------------------------------------
   # GitHub Actions workflows
   # ---------------------------------------------------------------------------
   - package-ecosystem: "github-actions"
