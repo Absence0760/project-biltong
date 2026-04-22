@@ -23,6 +23,16 @@ describe('formatPrice', () => {
 		expect(formatPrice(0)).toBe('R 0');
 	});
 
+	it('formats a negative number (should not occur in prod, but must not throw)', () => {
+		const result = formatPrice(-1);
+		expect(result).toMatch(/^R /);
+	});
+
+	it('formats a fractional rand amount (cents stored as a decimal)', () => {
+		const result = formatPrice(0.5);
+		expect(result).toMatch(/^R /);
+	});
+
 	it('uses the en-ZA thousand separator for large numbers', () => {
 		// en-ZA groups with a non-breaking space or comma depending on ICU;
 		// whichever it is, matchers here are locale-aware rather than literal.

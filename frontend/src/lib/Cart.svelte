@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { cart } from './cartStore.svelte';
 	import { formatPrice } from './sanity';
+	import { isValidEmail } from './validation';
 	import { PUBLIC_API_URL } from '$env/static/public';
 
 	type Props = {
@@ -80,7 +81,7 @@
 			error = 'Please fill in your name, email, and shipping address.';
 			return;
 		}
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+		if (!isValidEmail(email)) {
 			error = 'Please enter a valid email address.';
 			return;
 		}

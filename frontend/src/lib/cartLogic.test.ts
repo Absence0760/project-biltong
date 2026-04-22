@@ -137,6 +137,18 @@ describe('openPanel / closePanel', () => {
 	});
 });
 
+describe('clear path (removeItem until empty)', () => {
+	it('cartCount reaches 0 after removing all items', () => {
+		const items: CartItem[] = [];
+		addItem(items, makeProduct({ _id: 'prod-1' }));
+		addItem(items, makeProduct({ _id: 'prod-2', priceZar: 800 }));
+		removeItem(items, 'prod-1');
+		removeItem(items, 'prod-2');
+		expect(cartCount(items)).toBe(0);
+		expect(cartTotal(items)).toBe(0);
+	});
+});
+
 describe('cartCount and cartTotal', () => {
 	it('cartCount sums quantities across line items', () => {
 		const items: CartItem[] = [];
