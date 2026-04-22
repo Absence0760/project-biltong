@@ -3,7 +3,7 @@
   <ellipse cx="94" cy="178" rx="68" ry="6" fill="#2a1a10" opacity="0.18"/>
 
   <!-- front-right leg (anchored between the back legs, stepping forward-left through the pivot) -->
-  <path d="M122 130 L134 130 L72 172 L60 172 Z" fill="#c9a27a" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M88 130 L100 130 L72 172 L60 172 Z" fill="#c9a27a" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
   <ellipse cx="66" cy="174" rx="10" ry="5" fill="#2a1a10"/>
 
   <!-- back-left leg -->
