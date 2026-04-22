@@ -594,7 +594,7 @@ same AWS identity gets you back in. The KMS key costs ~$1/month.
 | File | Encrypted? | Why |
 |---|---|---|
 | `infra/terraform.tfvars.sops` | ✅ yes | Committed. Contains the AWS + Resend + Sanity secrets Terraform needs. |
-| `infra/terraform.tfvars` | — | Plaintext, gitignored. Created by `bin/setup.sh` as a scratch file, shredded on exit. |
+| `infra/terraform.tfvars` | — | Plaintext, gitignored. Created by `bin/setup.sh` as a scratch file, deleted on exit. |
 | `infra/terraform.tfvars.example` | ❌ no | Template with empty placeholder values — safe to commit. |
 | `backend/.env.sops` | ✅ yes | Committed. Local-dev secrets for `tsx` / `pnpm dev`. |
 | `backend/.env` | — | Plaintext, gitignored. Created by the operator via `sops -d backend/.env.sops > backend/.env`. |
@@ -636,7 +636,7 @@ Re-running the script after first setup is safe: it will not create a duplicate 
 | Edit a secret | `sops infra/terraform.tfvars.sops` — sops calls KMS, opens plaintext in `$EDITOR`, re-encrypts on save |
 | Rotate a value | Same as "edit" — change the value, save. Git diff shows the whole encrypted blob changed; `git log` tells you when. |
 | Read a secret into dev env | `sops -d backend/.env.sops > backend/.env` |
-| Run Terraform locally | `./bin/setup.sh` — it auto-decrypts `terraform.tfvars.sops` into a scratch plaintext file, runs Terraform, and shreds the plaintext on exit |
+| Run Terraform locally | `./bin/setup.sh` — it auto-decrypts `terraform.tfvars.sops` into a scratch plaintext file, runs Terraform, and deletes the plaintext on exit |
 | Add a collaborator | Grant their IAM identity `kms:Decrypt` (and optionally `kms:Encrypt`) on the KMS key — either via the key policy in the AWS console or by attaching an IAM policy to their user/role. **No changes to `.sops.yaml` and no re-encryption required.** IAM is the source of truth for access. |
 | Remove a collaborator | Revoke their `kms:Decrypt` permission in the key policy or their IAM policy. Takes effect immediately on the next decrypt attempt. |
 

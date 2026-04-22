@@ -54,7 +54,7 @@ if [[ "${1:-}" == "--dry" || "${1:-}" == "--dry-run" ]]; then
 fi
 
 # Track whether we decrypted tfvars ourselves, so we only clean up a file we
-# created (and don't shred a pre-existing plaintext tfvars the operator has
+# created (and don't delete a pre-existing plaintext tfvars the operator has
 # been editing by hand).
 DECRYPTED_TFVARS=0
 
@@ -82,7 +82,7 @@ err()   { printf "    ${C_RED}✗${C_RESET} %s\n" "$*" >&2; }
 fatal() { err "$*"; exit 1; }
 
 cleanup() {
-	# Shred any plaintext tfvars file we decrypted so it doesn't survive
+	# Delete any plaintext tfvars file we decrypted so it doesn't survive
 	# this script invocation. Only runs if we created the file ourselves —
 	# leaves a pre-existing plaintext tfvars (from before the SOPS migration)
 	# alone.
@@ -157,7 +157,7 @@ check_prereqs() {
 #      flow, no SOPS involved — operator will see a warning nudging them to
 #      migrate).
 #   2. If terraform.tfvars.sops exists, decrypt it into terraform.tfvars for
-#      the duration of this script. The cleanup trap shreds the plaintext
+#      the duration of this script. The cleanup trap deletes the plaintext
 #      on exit.
 #   3. Otherwise, fail and tell the operator to run bin/sops-init.sh.
 ensure_plaintext_tfvars() {
@@ -190,7 +190,7 @@ ensure_plaintext_tfvars() {
 		sops --decrypt "$TFVARS_SOPS_FILE" > "$TFVARS_FILE"
 		chmod 600 "$TFVARS_FILE"
 		DECRYPTED_TFVARS=1
-		ok "Decrypted to $TFVARS_FILE (will be shredded on exit)"
+		ok "Decrypted to $TFVARS_FILE (will be deleted on exit)"
 		return
 	fi
 

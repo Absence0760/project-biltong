@@ -35,7 +35,7 @@ pnpm frontend|backend|studio <script>   # filter to one workspace
 4. `cp frontend/.env.example frontend/.env` and same for `studio/` (no secrets — `PUBLIC_*` only).
 5. `pnpm dev` (or `pnpm dev:all`).
 
-`bin/setup.sh` is the **production bootstrap** (Terraform state backend, apply, GitHub Actions vars, Sanity webhook). Decrypts tfvars to a scratch file at start and shreds it on exit. Don't run it for local dev.
+`bin/setup.sh` is the **production bootstrap** (Terraform state backend, apply, GitHub Actions vars, Sanity webhook). Decrypts tfvars to a scratch file at start and deletes it on exit (`rm -f` via a bash `trap`). Don't run it for local dev.
 
 ## Cross-cutting policies
 

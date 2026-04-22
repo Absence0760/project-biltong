@@ -295,10 +295,10 @@ ends up encrypted with the wrong key.
   `.env.*` (with an exception only for `.env.example` and `.env.sops`),
   and `*.tfvars` (except `.tfvars.example` and `.tfvars.sops`). A stray
   `git add infra/terraform.tfvars` is blocked before it can stage.
-- **`bin/setup.sh` decrypts to a scratch file and shreds it on exit.**
+- **`bin/setup.sh` decrypts to a scratch file and deletes it on exit.**
   The plaintext `terraform.tfvars` exists only for the duration of a
-  Terraform apply; a bash `trap` on EXIT deletes it even if the script
-  errors out.
+  Terraform apply; a bash `trap` on EXIT removes it via `rm -f` even if
+  the script errors out.
 - **Production secrets are injected into the Lambda as env vars** at
   `terraform apply` time. They do not appear in the Lambda's source
   package, any git artifact, or CI logs.
