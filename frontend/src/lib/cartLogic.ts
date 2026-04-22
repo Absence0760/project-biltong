@@ -46,3 +46,18 @@ export function cartCount(items: CartItem[]): number {
 export function cartTotal(items: CartItem[]): number {
 	return items.reduce((s, i) => s + i.price * i.quantity, 0);
 }
+
+// ---------------------------------------------------------------------------
+// Panel state helpers — pure functions over a plain mutable flag so they are
+// testable without importing the Svelte rune store.
+// ---------------------------------------------------------------------------
+
+export type PanelState = { open: boolean };
+
+export function openPanel(state: PanelState): void {
+	state.open = true;
+}
+
+export function closePanel(state: PanelState): void {
+	state.open = false;
+}

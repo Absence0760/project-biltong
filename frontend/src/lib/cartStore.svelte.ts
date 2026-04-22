@@ -1,18 +1,22 @@
 import type { Product } from './sanity';
 import {
 	type CartItem,
+	type PanelState,
 	addItem,
 	removeItem,
 	incrementItem,
 	decrementItem,
 	cartCount,
-	cartTotal
+	cartTotal,
+	openPanel as _openPanel,
+	closePanel as _closePanel
 } from './cartLogic';
 
 export type { CartItem };
 
 function createCart() {
 	let items = $state<CartItem[]>([]);
+	let panel = $state<PanelState>({ open: false });
 
 	return {
 		get items() {
@@ -23,6 +27,9 @@ function createCart() {
 		},
 		get total() {
 			return cartTotal(items);
+		},
+		get panelOpen() {
+			return panel.open;
 		},
 		add(product: Product) {
 			addItem(items, product);
@@ -38,6 +45,12 @@ function createCart() {
 		},
 		clear() {
 			items.length = 0;
+		},
+		openPanel() {
+			_openPanel(panel);
+		},
+		closePanel() {
+			_closePanel(panel);
 		}
 	};
 }

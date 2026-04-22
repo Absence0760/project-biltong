@@ -27,6 +27,7 @@
 
 	function addToCart(product: Product) {
 		cart.add(product);
+		cart.openPanel();
 	}
 
 	onMount(async () => {

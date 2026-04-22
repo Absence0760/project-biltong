@@ -16,7 +16,6 @@
 	const ogImage = `${siteUrl}/og-default.svg`;
 	$: canonicalUrl = `${siteUrl}${page.url.pathname}`;
 
-	let cartOpen = false;
 	let menuOpen = false;
 
 	function closeMenu() {
@@ -93,7 +92,7 @@
 					{/each}
 				</ul>
 			</nav>
-			<button class="cart-btn" on:click={() => (cartOpen = true)} aria-label="Open cart">
+			<button class="cart-btn" on:click={() => cart.openPanel()} aria-label="Open cart">
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="9" cy="21" r="1"></circle>
 					<circle cx="20" cy="21" r="1"></circle>
@@ -152,7 +151,7 @@
 	<slot />
 </main>
 
-<Cart open={cartOpen} onclose={() => (cartOpen = false)} />
+<Cart open={cart.panelOpen} onclose={() => cart.closePanel()} />
 
 <footer class="site-footer">
 	<div class="container">

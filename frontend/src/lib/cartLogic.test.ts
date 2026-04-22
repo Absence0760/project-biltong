@@ -2,12 +2,15 @@ import { describe, it, expect } from 'vitest';
 import type { Product } from './sanity';
 import {
 	type CartItem,
+	type PanelState,
 	addItem,
 	removeItem,
 	incrementItem,
 	decrementItem,
 	cartCount,
-	cartTotal
+	cartTotal,
+	openPanel,
+	closePanel
 } from './cartLogic';
 
 function makeProduct(overrides: Partial<Product> = {}): Product {
@@ -111,6 +114,26 @@ describe('removeItem', () => {
 		addItem(items, makeProduct());
 		removeItem(items, 'does-not-exist');
 		expect(items).toHaveLength(1);
+	});
+});
+
+describe('openPanel / closePanel', () => {
+	it('openPanel sets open to true', () => {
+		const state: PanelState = { open: false };
+		openPanel(state);
+		expect(state.open).toBe(true);
+	});
+
+	it('closePanel sets open to false', () => {
+		const state: PanelState = { open: true };
+		closePanel(state);
+		expect(state.open).toBe(false);
+	});
+
+	it('openPanel is idempotent when already open', () => {
+		const state: PanelState = { open: true };
+		openPanel(state);
+		expect(state.open).toBe(true);
 	});
 });
 

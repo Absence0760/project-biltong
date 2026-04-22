@@ -19,6 +19,7 @@
 	function addToCart() {
 		if (!product) return;
 		cart.add(product);
+		cart.openPanel();
 	}
 
 	onMount(async () => {
