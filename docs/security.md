@@ -308,12 +308,15 @@ ends up encrypted with the wrong key.
   scope-limited "Deploy Studio" token, not an admin token.
 - `.claude/settings.json` is committed (the rest of `.claude/` is
   gitignored — see `.gitignore`) and ships a project-wide deny-list of
-  destructive commands: AWS resource deletion (S3, CloudFront, Lambda,
-  IAM, KMS, Route 53, ACM, DynamoDB, CloudWatch Logs, Budgets), force
-  pushes, hard resets, `terraform apply/destroy`, `gh secret set`,
-  `gh release create`, `gh workflow run`, and the studio deploy
-  variants. Operators using Claude Code in the project inherit the
-  deny-list automatically.
+  commands that write to external or destructive state: AWS resource
+  deletion (S3, CloudFront, Lambda, IAM, KMS, Route 53, ACM, DynamoDB,
+  CloudWatch Logs, Budgets), all `git push` operations, `git reset
+  --hard`, `git clean -f`, `git branch -d/-D`, `rm -rf/-fr`,
+  `terraform apply/destroy`, `gh secret set/delete`, `gh release
+  create/delete`, `gh repo delete`, `gh workflow run`, and the studio
+  deploy variants. Note: `git commit` is **not** blocked — Claude can
+  create commits when a session explicitly permits it. Operators using
+  Claude Code in the project inherit the deny-list automatically.
 
 **Residual risk:**
 - **An AWS credential with `kms:Decrypt` on the project key is a
