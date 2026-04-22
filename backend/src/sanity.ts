@@ -104,10 +104,9 @@ const TESTIMONIALS_QUERY = `*[_type == "testimonial" && visible == true] | order
 }`;
 
 let cachedClient: SanityClient | null = null;
+let cachedWriteClient: SanityClient | null = null;
 
-function getClient(): SanityClient {
-	if (cachedClient) return cachedClient;
-
+function getBaseConfig() {
 	const projectId = process.env.SANITY_PROJECT_ID;
 	const dataset = process.env.SANITY_DATASET ?? 'production';
 	const token = process.env.SANITY_API_TOKEN;
@@ -118,6 +117,14 @@ function getClient(): SanityClient {
 	if (!token) {
 		throw new Error('SANITY_API_TOKEN is not configured.');
 	}
+
+	return { projectId, dataset, token };
+}
+
+function getClient(): SanityClient {
+	if (cachedClient) return cachedClient;
+
+	const { projectId, dataset, token } = getBaseConfig();
 
 	cachedClient = createClient({
 		projectId,
@@ -134,8 +141,30 @@ function getClient(): SanityClient {
 	return cachedClient;
 }
 
+// Write client with useCdn: false for mutation-adjacent queries (createOrder,
+// updateOrderPayment, getOrderByRef). The Stripe webhook calls getOrderByRef
+// shortly after the order document is created; routing that read through the
+// CDN risks a cache-miss on a cold node and delaying the first retry by
+// minutes. Origin reads are ~200 ms vs ~50 ms from CDN — acceptable for the
+// write path.
+function getWriteClient(): SanityClient {
+	if (cachedWriteClient) return cachedWriteClient;
+
+	const { projectId, dataset, token } = getBaseConfig();
+
+	cachedWriteClient = createClient({
+		projectId,
+		dataset,
+		apiVersion: '2024-10-01',
+		useCdn: false,
+		token,
+		perspective: 'published'
+	});
+	return cachedWriteClient;
+}
+
 export async function createOrder(input: NewOrderInput): Promise<SanityOrder> {
-	const client = getClient();
+	const client = getWriteClient();
 	const created = await client.create({
 		_type: 'order',
 		orderRef: input.orderRef,
@@ -156,7 +185,7 @@ export async function updateOrderPayment(
 	orderRef: string,
 	updates: { status: OrderStatus; paymentId?: string }
 ): Promise<SanityOrder> {
-	const client = getClient();
+	const client = getWriteClient();
 	const query = `*[_type == "order" && orderRef == $ref][0]._id`;
 	const docId = await client.fetch<string | null>(query, { ref: orderRef });
 	if (!docId) {
@@ -196,7 +225,7 @@ export async function getProductsByIds(ids: string[]): Promise<SanityProduct[]> 
 }
 
 export async function getOrderByRef(orderRef: string): Promise<SanityOrder | null> {
-	const client = getClient();
+	const client = getWriteClient();
 	const query = `*[_type == "order" && orderRef == $ref][0]`;
 	const result = await client.fetch<SanityOrder | null>(query, { ref: orderRef });
 	return result ?? null;
