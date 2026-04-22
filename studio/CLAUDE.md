@@ -13,6 +13,14 @@ pnpm studio deploy   # publishes to <name>.sanity.studio (interactive first time
 
 The studio is excluded from `pnpm dev` because it's heavy. Run it with `pnpm dev:all` or on its own.
 
+> **First deploy — ACTION REQUIRED (once per project):** `pnpm studio deploy` must
+> be run **locally and interactively** before CI can deploy. The Sanity CLI will
+> prompt you to choose a subdomain (`*.sanity.studio`). After you confirm it, the
+> chosen `appId` is written back into `sanity.cli.ts` by the CLI — commit that
+> change. Subsequent CI runs (via `deploy-studio.yml`) will then be fully
+> non-interactive. Skipping this step means the CI job hangs indefinitely waiting
+> for a subdomain prompt.
+
 ## No tests
 
 There is no vitest config in this workspace and no test runner. **Don't add one.** Schema correctness is checked by tsc; behaviour is checked by the owner using the studio.
