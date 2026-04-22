@@ -72,104 +72,8 @@ Frontend displays status, shipping info, tracking number (if present)
 
 ## Data model — Sanity `order` schema
 
-A new document type alongside the existing `product`. Proposed shape:
-
-```typescript
-// studio/schemas/order.ts  (PROPOSED — not yet created)
-import { defineField, defineType } from 'sanity';
-
-export const order = defineType({
-  name: 'order',
-  title: 'Order',
-  type: 'document',
-  // The team can edit these freely; the backend creates them via API token.
-  fields: [
-    defineField({
-      name: 'orderRef',
-      title: 'Order reference',
-      type: 'string',
-      readOnly: true,
-      validation: (rule) => rule.required()
-    }),
-    defineField({
-      name: 'status',
-      title: 'Status',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Pending payment', value: 'pending_payment' },
-          { title: 'Payment received', value: 'payment_received' },
-          { title: 'Shipped', value: 'shipped' },
-          { title: 'Delivered', value: 'delivered' },
-          { title: 'Cancelled', value: 'cancelled' }
-        ],
-        layout: 'radio'
-      },
-      initialValue: 'pending_payment',
-      validation: (rule) => rule.required()
-    }),
-
-    // --- Customer ---
-    defineField({ name: 'customerName', title: 'Customer name', type: 'string' }),
-    defineField({ name: 'customerEmail', title: 'Customer email', type: 'string' }),
-    defineField({ name: 'customerPhone', title: 'Customer phone', type: 'string' }),
-    defineField({
-      name: 'shippingAddress',
-      title: 'Shipping address',
-      type: 'text',
-      rows: 3
-    }),
-
-    // --- Order contents ---
-    defineField({
-      name: 'items',
-      title: 'Items',
-      type: 'text',
-      rows: 4,
-      description: 'What the customer said they wanted (free text for now).'
-    }),
-    defineField({
-      name: 'customerNotes',
-      title: 'Customer notes',
-      type: 'text',
-      rows: 2
-    }),
-
-    // --- Shipping (populated when status → shipped) ---
-    defineField({ name: 'trackingNumber', title: 'Tracking number', type: 'string' }),
-    defineField({ name: 'trackingUrl', title: 'Tracking URL', type: 'url' }),
-    defineField({ name: 'shippingCarrier', title: 'Shipping carrier', type: 'string' }),
-
-    // --- Private ---
-    defineField({
-      name: 'internalNotes',
-      title: 'Internal notes (never shown to customer)',
-      type: 'text',
-      rows: 3
-    })
-  ],
-  orderings: [
-    {
-      title: 'Newest first',
-      name: 'createdDesc',
-      by: [{ field: '_createdAt', direction: 'desc' }]
-    }
-  ],
-  preview: {
-    select: {
-      title: 'orderRef',
-      subtitle: 'customerName',
-      status: 'status'
-    },
-    prepare({ title, subtitle, status }) {
-      return {
-        title: `${title} — ${subtitle || 'Unknown'}`,
-        subtitle: `Status: ${status}`
-      };
-    }
-  }
-});
-```
+A document type alongside the existing `product`. The schema is implemented
+at `studio/schemas/order.ts` — see that file for the canonical field list.
 
 ### Status values and transitions
 
@@ -216,8 +120,8 @@ where someone may legitimately need to correct a mistake.
    the team manually resets an order.
 6. Create a Stripe Checkout session (`backend/src/stripe.ts`) with the
    computed line items and a `client_reference_id` equal to the order ref.
-7. Return `{ success: true, ref, checkoutUrl }`. The browser redirects
-   to `checkoutUrl`, which is Stripe's hosted checkout page.
+7. Return `{ success: true, ref, stripe: { sessionId, url } }`. The browser
+   redirects to `stripe.url`, which is Stripe's hosted checkout page.
 
 Failure modes:
 
@@ -298,33 +202,33 @@ nature, no point prerendering).
          "trackingUrl": "https://www.courierguy.co.za/track/CG123456"
        },
        "createdAt": "2026-04-10T10:30:00Z",
-       "statusUpdatedAt": "2026-04-12T14:00:00Z"
+       "updatedAt": "2026-04-12T14:00:00Z"
      }
      ```
      Note the absence of `internalNotes`, `customerPhone`, `shippingAddress`.
 5. Frontend renders a status card: big status label, progression indicator
    (pending → received → shipped → delivered), tracking link if present.
 
-## Backend changes
+## Backend implementation
 
-New files and changes:
+Relevant files:
 
 ```
 backend/src/
-├── sanity.ts                   NEW  Sanity write client wrapper
+├── sanity.ts                   Sanity read/write client wrapper
 ├── routes/
-│   ├── orders.ts               MODIFIED  creates Sanity doc before sending emails
-│   ├── order-lookup.ts         NEW  GET /orders/:ref?email=…
-│   └── sanity-webhook.ts       NEW  POST /webhooks/sanity-order + signature verify
-├── email-templates.ts          NEW  extracted from orders.ts, keyed by status
-└── app.ts                      MODIFIED  mount the new routes
+│   ├── orders.ts               POST /orders — creates Sanity doc before sending emails
+│   ├── order-lookup.ts         GET /orders/:ref?email=…
+│   └── sanity-webhook.ts       POST /webhooks/sanity-order + signature verify
+├── email-templates.ts          Email templates keyed by status
+└── app.ts                      Mounts all routes
 ```
 
-### `backend/src/sanity.ts` (new)
+### `backend/src/sanity.ts`
 
 Write client, uses `SANITY_API_TOKEN`. Exports `createOrder()` and `getOrderByRef()`.
 
-### `backend/src/routes/order-lookup.ts` (new)
+### `backend/src/routes/order-lookup.ts`
 
 ```
 GET /orders/:ref
@@ -332,13 +236,13 @@ Query params:
   email (required) — must match the order's customerEmail (case-insensitive)
 
 Response 200:
-  { ref, status, customerName, items, shipping, createdAt, statusUpdatedAt }
+  { ref, status, customerName, items, shipping, createdAt, updatedAt }
 
 Response 404:
   { error: "Order not found" }
 ```
 
-### `backend/src/routes/sanity-webhook.ts` (new)
+### `backend/src/routes/sanity-webhook.ts`
 
 ```
 POST /webhooks/sanity-order
@@ -379,15 +283,13 @@ sends them by hand as a direct reply to each order. See
 [`docs/security.md`](./security.md) for the rationale (impersonation
 mitigation, no cryptographic automation).
 
-## Frontend changes
-
-New and modified files:
+## Frontend implementation
 
 ```
 frontend/src/routes/
 └── track/
-    ├── +page.svelte            NEW  lookup form + status card
-    └── +page.ts                NEW  export const prerender = false, csr = true
+    ├── +page.svelte            lookup form + status card
+    └── +page.ts                prerender = false, csr = true
 ```
 
 Why `prerender = false` for this route: the content is entirely dynamic and
@@ -399,37 +301,37 @@ The `/track` page needs to be listed in the layout nav? Probably not —
 customers arrive from their confirmation email, not from discovery. Leave it
 out of the main nav, reachable via the link in emails and via direct URL.
 
-## Studio changes
+## Studio schema
 
 ```
 studio/schemas/
-├── index.ts          MODIFIED  add `order` to the export
-└── order.ts          NEW       (schema as shown above)
+├── index.ts          registers the order schema
+└── order.ts          order document type
 ```
 
-That's it on the Studio side. Once the schema is registered and deployed,
-the team will see a new "Order" type in the studio sidebar.
+The `order` schema is registered and deployed. The team can see and manage
+orders in the "Order" section of the studio sidebar.
 
-## Infrastructure changes
+## Infrastructure
 
-`infra/variables.tf`, `infra/lambda.tf`, `infra/terraform.tfvars.example`:
+`infra/variables.tf`, `infra/lambda.tf`, `infra/terraform.tfvars.example` carry:
 
-- Add `sanity_api_token` and `sanity_webhook_secret` variables (both `sensitive = true`)
-- Add `sanity_project_id` and `sanity_dataset` variables (not sensitive)
-- Pass all four into the Lambda's environment block in `lambda.tf`
+- `sanity_api_token` and `sanity_webhook_secret` (both `sensitive = true`)
+- `sanity_project_id` and `sanity_dataset` (not sensitive)
 
-No new AWS resources — the Lambda already exists, we're just adding env vars.
+All four are passed into the Lambda's environment block in `lambda.tf`.
+No additional AWS resources are created for this feature.
 
 ## Email templates
 
-Extract to `backend/src/email-templates.ts`:
+`backend/src/email-templates.ts` exports:
 
-- `orderCreatedOwner(order)` — notification to the owner, unchanged from today
+- `orderCreatedOwner(order)` — notification to the owner
 - `orderCreatedCustomer(order)` — "thanks, awaiting payment"
 - `paymentReceivedCustomer(order)` — "thanks, we've got your payment, shipping soon"
 - `shippedCustomer(order)` — "your order is on the way, tracking X"
-- `deliveredCustomer(order)` — optional "hope you enjoy it"
-- `cancelledCustomer(order)` — "your order was cancelled, refund in N days" or similar
+- `deliveredCustomer(order)` — "hope you enjoy it"
+- `cancelledCustomer(order)` — "your order was cancelled"
 
 Status → template map lives in `sanity-webhook.ts`.
 
@@ -474,8 +376,7 @@ trigger fake status emails.
 
 ### 4. Rate limiting on `/orders/:ref`
 
-Not implemented yet. Worth adding if enumeration becomes a concern — Hono has
-middleware for it, or we can use AWS API Gateway throttling. See the roadmap.
+Implemented: see `backend/src/rate-limit.ts`. Limit is 20 lookups/minute per IP.
 
 ### 5. Sanity write token scope
 
@@ -534,8 +435,8 @@ supported payment methods (Card, Apple Pay, Google Pay).
    from the Sanity prices, `success_url` pointing at
    `${SITE_URL}/payment/complete?ref=<ref>`, `cancel_url` at
    `/payment/cancelled`, and `client_reference_id` set to the order ref.
-6. Backend returns `{ success, ref, checkoutUrl }` to the frontend.
-7. Frontend redirects the browser to `checkoutUrl` — customer lands on
+6. Backend returns `{ success, ref, stripe: { sessionId, url } }` to the frontend.
+7. Frontend redirects the browser to `stripe.url` — customer lands on
    Stripe's hosted payment page.
 8. Customer pays with Card, Apple Pay, or Google Pay.
 9. Stripe redirects customer back to `/payment/complete?ref=…`.
