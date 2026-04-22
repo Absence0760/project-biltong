@@ -31,11 +31,11 @@
   <path d="M129 96 Q146 74 164 80 Q176 92 170 104" fill="none" stroke="#2a1a10" stroke-width="4" stroke-linecap="round"/>
   <circle cx="170" cy="104" r="5" fill="#2a1a10"/>
 
-  <!-- thong (waistband across the rump, triangle hanging between the back legs) -->
-  <path d="M115 108 L143 108 L134 156 Q129 160 124 156 Z" fill="#c93434" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
+  <!-- thong (waistband across the rump, narrow tapering triangle terminating at the body's lower edge) -->
+  <path d="M119 108 L139 108 Q133 122 131 136 Q129 140 127 136 Q125 122 119 108 Z" fill="#c93434" stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"/>
   <rect x="104" y="104" width="50" height="7" rx="3" fill="#c93434" stroke="#2a1a10" stroke-width="3"/>
   <!-- thong highlight -->
-  <path d="M120 116 Q129 122 138 116" fill="none" stroke="#ffb3b3" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <path d="M123 116 Q129 120 135 116" fill="none" stroke="#ffb3b3" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
 
   <!-- head -->
   <ellipse cx="52" cy="76" rx="30" ry="28" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
