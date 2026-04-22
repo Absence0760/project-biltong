@@ -38,7 +38,7 @@ export const product = defineType({
 			title: 'Price (ZAR)',
 			description: 'Price in South African Rand. Enter whole rand (e.g. 450).',
 			type: 'number',
-			validation: (rule) => rule.min(0)
+			validation: (rule) => rule.required().min(0)
 		}),
 		defineField({
 			name: 'dimensions',
