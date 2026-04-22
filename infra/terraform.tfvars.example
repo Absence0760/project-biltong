@@ -1,23 +1,24 @@
 # Copy this file to terraform.tfvars and fill in the values.
 # terraform.tfvars is gitignored — secrets stay out of source control.
 
-# Primary AWS region. Leave as-is unless you know you want something else.
-aws_region = "af-south-1"
+# Primary AWS region. Defaults to us-east-1 so everything lives in the same
+# region as the ACM cert CloudFront requires. Change only if you have a reason.
+aws_region = "us-east-1"
 
 # Apex domain for the site (no protocol, no trailing slash).
-domain_name = "thongbiltong.co.za"
+domain_name = "thongbiltong.com"
 
 # Route 53 hosted zone ID for the apex domain.
-# Find it with: aws route53 list-hosted-zones-by-name --dns-name thongbiltong.co.za
+# Find it with: aws route53 list-hosted-zones-by-name --dns-name thongbiltong.com
 route53_zone_id = "Z0000000000000000000"
 
 # GitHub repo in 'owner/name' form — used to scope the CI role's trust policy.
-github_repo = "jaredhoward/thong-biltong"
+github_repo = "Absence0760/project-biltong"
 
 # Backend secrets. These are passed to the Lambda as env vars on first apply.
 # After that, rotate them by updating this file and re-running `terraform apply`.
 resend_api_key = "re_xxxxxxxxxxxxxxxxxxxx"
-from_email     = "Thong Biltong <orders@thongbiltong.co.za>"
+from_email     = "Thong Biltong <orders@thongbiltong.com>"
 owner_email    = "orders@example.com"
 
 # Sanity project — the value baked into the frontend build at CI time and
@@ -44,7 +45,7 @@ site_url = ""
 # and sk_live_... / whsec_... (live mode) once you go to production.
 stripe_secret_key     = ""
 stripe_webhook_secret = ""
-stripe_currency       = "zar"
+stripe_currency       = "usd"
 
 # Cap on concurrent Lambda invocations. Default 20 is far above expected
 # organic load and caps blast radius for traffic spikes / abuse attempts.

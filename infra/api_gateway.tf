@@ -1,16 +1,11 @@
 # ----------------------------------------------------------------------------
 # API Gateway v2 (HTTP API) in front of the Lambda.
 #
-# Replaces the Lambda Function URL — that path hit an undiagnosable AWS-side
-# 403 in this account + af-south-1 that blocked both public (NONE) and
-# CloudFront-signed (AWS_IAM via OAC) invocations. HTTP API uses a
-# different gateway pipeline and is unaffected.
-#
 # The API is publicly invocable at its execute-api URL. CloudFront fronts
-# it at thongbiltong.co.za/api/*. Application-level authorization
-# (email verification on order lookup, HMAC on Sanity webhooks, signature
-# on Stripe webhooks, rate limiting) gates the actual sensitive routes — the
-# HTTP API itself is an open reverse proxy to Hono.
+# it at <domain>/api/*. Application-level authorization (email verification
+# on order lookup, HMAC on Sanity webhooks, signature on Stripe webhooks,
+# rate limiting) gates the actual sensitive routes — the HTTP API itself is
+# an open reverse proxy to Hono.
 # ----------------------------------------------------------------------------
 
 resource "aws_apigatewayv2_api" "backend" {

@@ -56,7 +56,7 @@
 #
 # Environment overrides:
 #
-#   KMS_REGION    — AWS region for the KMS key (default: af-south-1)
+#   KMS_REGION    — AWS region for the KMS key (default: us-east-1)
 #   KMS_ALIAS     — Alias name without the "alias/" prefix
 #                   (default: thong-biltong-sops)
 
@@ -64,7 +64,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOPS_CONFIG="$REPO_ROOT/.sops.yaml"
-KMS_REGION="${KMS_REGION:-af-south-1}"
+KMS_REGION="${KMS_REGION:-us-east-1}"
 KMS_ALIAS_NAME="${KMS_ALIAS:-thong-biltong-sops}"
 KMS_ALIAS_PATH="alias/$KMS_ALIAS_NAME"
 REGION_PLACEHOLDER="KMS_REGION_PLACEHOLDER"

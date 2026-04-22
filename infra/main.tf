@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket         = "thong-biltong-tfstate"
     key            = "prod/terraform.tfstate"
-    region         = "af-south-1"
+    region         = "us-east-1"
     dynamodb_table = "thong-biltong-tfstate-lock"
     encrypt        = true
   }
@@ -19,10 +19,15 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.70"
     }
+    archive = {
+      source  = "hashicorp/archive"
+      version = "~> 2.4"
+    }
   }
 }
 
 # Primary region — where the Lambda, DynamoDB lock table, and state bucket live.
+# Defaults to us-east-1 (same region as the ACM cert CloudFront requires).
 provider "aws" {
   region = var.aws_region
 
@@ -35,8 +40,11 @@ provider "aws" {
   }
 }
 
-# CloudFront requires its ACM certificate to live in us-east-1, regardless of
-# where the rest of the infrastructure lives.
+# CloudFront requires its ACM certificate in us-east-1 specifically, so this
+# alias pins the cert provider there regardless of what var.aws_region is set
+# to. With the default setup (aws_region = "us-east-1") this points at the
+# same region as the default provider, but the alias is kept so the ACM
+# requirement stays explicit if the primary region is ever moved.
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"

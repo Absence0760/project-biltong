@@ -1,10 +1,11 @@
 # ----------------------------------------------------------------------------
 # Monthly cost budget with alerting
 #
-# A small e-commerce site at this scale should cost ~R15-30/month (mostly the
-# Route 53 hosted zone). The budget below alerts when actual or forecast spend
-# crosses 50%, 80%, and 100% of the configured cap, giving early warning of
-# misconfiguration, attack-driven traffic spikes, or runaway log volume.
+# A small e-commerce site at this scale should cost ~$1-3/month (mostly the
+# Route 53 hosted zone at $0.50/mo plus the SOPS KMS key at $1/mo). The budget
+# below alerts when actual or forecast spend crosses 50%, 80%, and 100% of
+# the configured cap, giving early warning of misconfiguration, attack-driven
+# traffic spikes, or runaway log volume.
 #
 # Default cap is intentionally several times the expected baseline so normal
 # month-to-month variance doesn't generate noise. Override via tfvars if you

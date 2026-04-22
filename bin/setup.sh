@@ -22,7 +22,8 @@
 #   - Terraform >= 1.6
 #   - GitHub CLI (`gh`), authenticated (`gh auth status`)
 #   - jq (JSON parser)
-#   - af-south-1 region enabled in your AWS account
+#   - A standard US AWS region (us-east-1 by default) — new accounts have
+#     this enabled out of the box; no region-enablement step needed.
 #   - infra/terraform.tfvars exists and is filled in
 #   - SANITY_ADMIN_TOKEN env var set to an Administrator token from
 #     https://www.sanity.io/manage → project → API → Tokens
@@ -224,7 +225,7 @@ read_tfvars() {
 	step "Reading terraform.tfvars"
 
 	AWS_REGION="$(tfvar aws_region)"
-	AWS_REGION="${AWS_REGION:-af-south-1}"
+	AWS_REGION="${AWS_REGION:-us-east-1}"
 	DOMAIN_NAME="$(tfvar domain_name)"
 	GITHUB_REPO="$(tfvar github_repo)"
 	SANITY_PROJECT_ID="$(tfvar sanity_project_id)"

@@ -1,11 +1,11 @@
 variable "aws_region" {
-  description = "Primary AWS region for Lambda, DynamoDB, and S3 resources."
+  description = "Primary AWS region for Lambda, DynamoDB, and S3 resources. Defaults to us-east-1 — same region as the ACM cert CloudFront requires, so everything lives in one region."
   type        = string
-  default     = "af-south-1"
+  default     = "us-east-1"
 }
 
 variable "domain_name" {
-  description = "Apex domain for the site, e.g. thongbiltong.co.za"
+  description = "Apex domain for the site, e.g. thongbiltong.com"
   type        = string
 }
 
@@ -83,9 +83,9 @@ variable "stripe_webhook_secret" {
 }
 
 variable "stripe_currency" {
-  description = "ISO 4217 currency code (lowercase) passed to Stripe Checkout. South African Rand = zar."
+  description = "ISO 4217 currency code (lowercase) passed to Stripe Checkout. US Dollars = usd."
   type        = string
-  default     = "zar"
+  default     = "usd"
 }
 
 # --- Monthly budget alerts ---
@@ -96,7 +96,7 @@ variable "lambda_reserved_concurrency" {
     above expected organic load (this site sees a handful of orders per
     week) but caps blast radius if an attacker bypasses the in-memory
     rate limiter. Setting to -1 removes the cap and falls back to the
-    account default (1000 in af-south-1).
+    account default (1000 in most US regions; new accounts may start at 10).
   EOT
   type        = number
   default     = 20

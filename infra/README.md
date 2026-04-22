@@ -14,7 +14,7 @@ Terraform configuration for the Thong Biltong AWS resources.
 - **Lambda function** running the Hono backend as an ESM bundle
 - **API Gateway v2 (HTTP API)** fronting the Lambda via an AWS_PROXY
   integration. CloudFront's `/api/*` behavior forwards to API Gateway, so
-  the backend is reachable at `thongbiltong.co.za/api/*`. A CloudFront
+  the backend is reachable at `<domain>/api/*`. A CloudFront
   Function strips the `/api` prefix before forwarding, keeping Hono routes
   at their natural paths (`/orders`, `/products`, etc.).
 - **Lambda execution IAM role** + CloudWatch log group (30-day retention)
@@ -36,8 +36,8 @@ For first-time deploy walkthrough see [`../docs/deployment.md`](../docs/deployme
   CloudFront, Lambda, and Route 53 resources
 - The apex domain's Route 53 hosted zone must already exist (Terraform will
   not create it, only add records to it)
-- The `af-south-1` region must be **enabled** in your AWS account (Account
-  → AWS Regions → enable Africa (Cape Town))
+- A standard US region (the default `us-east-1`) — enabled out of the box
+  on new AWS accounts, no region-enablement step needed
 
 ## Easiest path: use `bin/setup.sh`
 
@@ -61,12 +61,13 @@ must create these manually the first time, because Terraform can't create its
 own state backend.
 
 ```bash
-export AWS_REGION=af-south-1
+export AWS_REGION=us-east-1
 
+# us-east-1 is the one region that REJECTS --create-bucket-configuration;
+# every other region requires it. Drop the flag if you're in us-east-1.
 aws s3api create-bucket \
   --bucket thong-biltong-tfstate \
-  --region "$AWS_REGION" \
-  --create-bucket-configuration LocationConstraint="$AWS_REGION"
+  --region "$AWS_REGION"
 
 aws s3api put-bucket-versioning \
   --bucket thong-biltong-tfstate \
@@ -91,6 +92,10 @@ aws dynamodb create-table \
   --region "$AWS_REGION"
 ```
 
+The `backend "s3"` block in `main.tf` hard-codes `region = "us-east-1"` — if
+you change `aws_region` to something else, also update the backend block (it
+can't reference variables) or re-run `terraform init -reconfigure`.
+
 The `backend "s3"` block in `main.tf` is already configured with these
 bucket/table names, so the next `terraform init` will pick them up.
 
@@ -114,7 +119,7 @@ Stripe-specific:
 - `stripe_secret_key` — `sk_test_…` or `sk_live_…`. Marked `sensitive = true`.
 - `stripe_webhook_secret` — HMAC secret from the Stripe dashboard for the
   `/webhooks/stripe` endpoint. Marked `sensitive = true`.
-- `stripe_currency` — ISO code, defaults to `zar`.
+- `stripe_currency` — ISO code, defaults to `usd`.
 
 ## Apply
 

@@ -10,7 +10,7 @@ Not a pnpm workspace — no `package.json`.
 - **Never run `terraform destroy` without explicit user confirmation.**
 - **OIDC only for CI auth.** Don't introduce long-lived AWS access keys. The GitHub Actions role (`github_oidc.tf`) is trust-policied to the `production` GitHub Actions environment of the configured repo (environment-scoped, not branch-scoped, so release-gated deploys with `refs/tags/<tag>` work).
 - **Coordinate Terraform edits with `.github/workflows/` changes.** New IAM permissions, output values, or env vars often need matching workflow updates — make both edits in the same change.
-- **Two-region setup is intentional.** Primary region is `af-south-1` (Cape Town); the ACM cert provider alias targets `us-east-1` because CloudFront requires its certs there. Don't try to consolidate.
+- **Single-region setup (us-east-1).** Primary region is `us-east-1` — the same region CloudFront requires ACM certs in, so everything lives in one place. The `aws.us_east_1` provider alias still exists in `main.tf` to make the ACM requirement explicit (useful if the primary region is ever moved), but currently resolves to the same region as the default provider.
 
 ## Workflow
 
@@ -31,7 +31,7 @@ The Lambda reads three Stripe-related vars from its environment, populated by Te
 
 - `STRIPE_SECRET_KEY` — server-side API key used to create Checkout sessions (`sk_test_…` or `sk_live_…`)
 - `STRIPE_WEBHOOK_SECRET` — HMAC secret used to verify `/webhooks/stripe` signatures
-- `STRIPE_CURRENCY` — ISO currency code (defaults to `zar`)
+- `STRIPE_CURRENCY` — ISO currency code (defaults to `usd`)
 
 All three are marked `sensitive = true` in `variables.tf` except `STRIPE_CURRENCY`.
 

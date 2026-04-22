@@ -122,7 +122,6 @@ resource "aws_lambda_function" "backend" {
   }
 }
 
-# Lambda Function URL removed — see api_gateway.tf for the replacement.
-# The Function URL feature hit an undiagnosable 403 at the gateway layer
-# in this account + af-south-1 that affected both public and signed IAM
-# traffic. API Gateway v2 HTTP API now fronts the Lambda.
+# Lambda invocation is fronted by API Gateway v2 HTTP API — see
+# api_gateway.tf. CloudFront's /api/* behavior forwards to the gateway,
+# which proxies to this Lambda.
