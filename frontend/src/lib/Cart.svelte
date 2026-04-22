@@ -10,6 +10,52 @@
 
 	let { open = false, onclose }: Props = $props();
 
+	let panelEl = $state<HTMLElement | null>(null);
+
+	// Focus trap: when the panel opens, move focus to the first focusable
+	// element inside it. On Tab/Shift+Tab, cycle within the panel only.
+	$effect(() => {
+		if (!open || !panelEl) return;
+
+		const focusable = (): HTMLElement[] =>
+			Array.from(
+				panelEl!.querySelectorAll<HTMLElement>(
+					'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+				)
+			);
+
+		// Move focus in on next tick (panel is just mounted).
+		const raf = requestAnimationFrame(() => {
+			const els = focusable();
+			if (els.length) els[0].focus();
+		});
+
+		function trapFocus(e: KeyboardEvent) {
+			if (e.key !== 'Tab') return;
+			const els = focusable();
+			if (!els.length) return;
+			const first = els[0];
+			const last = els[els.length - 1];
+			if (e.shiftKey) {
+				if (document.activeElement === first) {
+					e.preventDefault();
+					last.focus();
+				}
+			} else {
+				if (document.activeElement === last) {
+					e.preventDefault();
+					first.focus();
+				}
+			}
+		}
+
+		panelEl!.addEventListener('keydown', trapFocus);
+		return () => {
+			cancelAnimationFrame(raf);
+			panelEl?.removeEventListener('keydown', trapFocus);
+		};
+	});
+
 	let name = $state('');
 	let email = $state('');
 	let phone = $state('');
@@ -99,11 +145,12 @@
 <svelte:window onkeydown={handleKeydown} />
 
 {#if open}
-	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<!-- svelte-ignore a11y_click_events_have_key_events -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div class="backdrop" onclick={handleBackdropClick}>
-		<aside class="panel">
+		<div class="panel" role="dialog" aria-modal="true" aria-labelledby="cart-heading" bind:this={panelEl}>
 			<header class="panel-header">
-				<h2>Your order</h2>
+				<h2 id="cart-heading">Your order</h2>
 				<button class="close-btn" onclick={onclose} aria-label="Close cart">
 					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
 						<line x1="18" y1="6" x2="6" y2="18"></line>
@@ -198,7 +245,7 @@
 					You'll be redirected to Stripe to complete payment securely.
 				</p>
 			{/if}
-		</aside>
+		</div>
 	</div>
 {/if}
 
