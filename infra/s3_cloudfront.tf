@@ -146,7 +146,7 @@ resource "aws_cloudfront_distribution" "frontend" {
   is_ipv6_enabled     = true
   comment             = "Thong Biltong frontend"
   default_root_object = "index.html"
-  price_class         = "PriceClass_100" # North America + Europe. Cheapest class that still covers ZA traffic well.
+  price_class         = "PriceClass_200" # NA + Europe + Asia + ME + Africa. Includes the Cape Town PoP for the primary ZA audience.
 
   aliases = [var.domain_name, "www.${var.domain_name}"]
 
