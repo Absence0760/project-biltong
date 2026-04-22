@@ -6,14 +6,14 @@ Repo-wide guidance. Loads into every Claude Code session — keep short. Per-wor
 
 Thong Biltong — website for a South African biltong brand with a cheeky cartoon mascot (a bull in a thong). Static brochure + shop, payments via Stripe Checkout (cards, Apple Pay, Google Pay — redirect model, no card data on our servers), Sanity CMS for content.
 
-## Workspaces (pnpm monorepo, Node ≥22)
+## Project packages and modules (Node ≥22)
 
 | Path | What | Dev port | Per-workspace guide |
 |---|---|---|---|
-| `frontend/` | SvelteKit 5 static site | 7777 | `frontend/CLAUDE.md` |
-| `backend/` | Hono on Lambda + local Node | 3001 | `backend/CLAUDE.md` |
-| `studio/` | Sanity Studio (React 19) | 3333 | `studio/CLAUDE.md` |
-| `infra/` | Terraform (AWS + GitHub OIDC) | — | `infra/CLAUDE.md` |
+| `frontend/` | SvelteKit 5 static site — pnpm workspace | 7777 | `frontend/CLAUDE.md` |
+| `backend/` | Hono on Lambda + local Node — pnpm workspace | 3001 | `backend/CLAUDE.md` |
+| `studio/` | Sanity Studio (React 19) — pnpm workspace | 3333 | `studio/CLAUDE.md` |
+| `infra/` | Terraform (AWS + GitHub OIDC) — not a pnpm package | — | `infra/CLAUDE.md` |
 
 ## Commands (run from repo root)
 
