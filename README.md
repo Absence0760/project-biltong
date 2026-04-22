@@ -1,5 +1,15 @@
 # Thong Biltong
 
+> **ACTION REQUIRED — SOPS bootstrap (once per project):**
+> Before any local dev or production deploy, run `./bin/sops-init.sh`
+> (requires AWS CLI auth). This creates the project's KMS key
+> (`alias/thong-biltong-sops` in `af-south-1`), writes its ARN into
+> `.sops.yaml`, and seeds the encrypted secrets files from the examples.
+> Until this is done, `.sops.yaml` contains placeholder ARNs and neither
+> `infra/terraform.tfvars.sops` nor `backend/.env.sops` exist.
+> See [`docs/deployment.md § Secrets management`](./docs/deployment.md)
+> for the full workflow.
+
 Website for Thong Biltong — a South African biltong brand with a cheeky
 cartoon mascot (a bull in a thong). A static brochure site with an online
 shop, checkout via Stripe (cards, Apple Pay, Google Pay), and a content

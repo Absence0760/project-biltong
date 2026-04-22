@@ -146,13 +146,19 @@ to understand what the script is doing under the hood, see
 ┌──────────────────────────────────────────────────────────────────────┐
 │  CONFIGURE                                           (~5 min)        │
 ├──────────────────────────────────────────────────────────────────────┤
+│  ⚠️  ACTION REQUIRED (once per project, before any other step):      │
+│  ./bin/sops-init.sh must be run first to bootstrap SOPS. Until it   │
+│  is run, .sops.yaml contains placeholder ARNs and no secrets files  │
+│  exist. See § Secrets management below.                              │
+│                                                                      │
 │  ./bin/sops-init.sh                                                  │
 │  sops infra/terraform.tfvars.sops   (fill in values in $EDITOR)      │
 │  sops backend/.env.sops             (same for local-dev secrets)     │
 │                                                                      │
-│  sops-init.sh generates an age keypair at                            │
-│  ~/.config/sops/age/keys.txt (one-time), wires the public recipient  │
-│  into .sops.yaml, and seeds encrypted files from the examples.       │
+│  sops-init.sh creates an AWS KMS key                                 │
+│  (alias/thong-biltong-sops in af-south-1), writes the alias ARN     │
+│  into .sops.yaml, and seeds the encrypted files from the examples.  │
+│  No age keypair is created; AWS KMS is the only encryption backend. │
 └──────────────────────────────────────────────────────────────────────┘
                                   │
                                   ▼
@@ -426,11 +432,19 @@ will skip anything that's already done.
 
 ### Step 5. First Sanity Studio deploy (interactive, one-time)
 
+> **This step must be run locally before CI can deploy the Studio.** The Sanity
+> CLI prompts for a subdomain choice the first time. CI (`deploy-studio.yml`) is
+> non-interactive, so it will hang indefinitely if this step is skipped. After
+> you complete it once and commit the resulting `studio/sanity.cli.ts` (with the
+> `appId` the CLI writes back), all subsequent CI deploys work automatically.
+
 ```bash
 cp studio/.env.example studio/.env
 # Fill in SANITY_STUDIO_PROJECT_ID with your project ID
 pnpm studio exec sanity login     # opens browser for Sanity SSO
 pnpm studio deploy                # pick a subdomain when prompted, e.g. "thongbiltong"
+# The CLI writes the chosen appId back into studio/sanity.cli.ts — commit it:
+git add studio/sanity.cli.ts && git commit -m "ops: claim sanity studio subdomain"
 ```
 
 This publishes the studio to `https://<subdomain>.sanity.studio`. Share that
