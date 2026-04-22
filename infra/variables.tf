@@ -71,17 +71,15 @@ variable "site_url" {
 # --- Stripe payment gateway ---
 
 variable "stripe_secret_key" {
-  description = "Stripe secret key (sk_live_... in production, sk_test_... for staging). Used by the backend to create Checkout Sessions."
+  description = "Stripe secret key (sk_live_... in production, sk_test_... for staging). Used by the backend to create Checkout Sessions. Required — no default so terraform apply fails fast if omitted."
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "stripe_webhook_secret" {
-  description = "Stripe webhook signing secret (whsec_...). Used by the backend to verify incoming webhook payloads."
+  description = "Stripe webhook signing secret (whsec_...). Used by the backend to verify incoming webhook payloads. Required — no default so terraform apply fails fast if omitted."
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "stripe_currency" {
