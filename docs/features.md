@@ -61,12 +61,13 @@ the repo) — see [`roadmap.md`](./roadmap.md).
 
 ## Home (`/`)
 
-- **Hero** rendered across a full-bleed hero photograph. The H1
+- **Hero** rendered over a full-bleed CSS gradient (`linear-gradient` from
+  cream to warm sand) with the brand mascot SVG centred over it. The H1
   introduces the brand followed by a short italic tagline and two
   CTA buttons: a primary cream-filled "Shop the collection" and a ghost
-  outlined alternate. The hero image is preloaded via
-  `<link rel="preload" as="image">` so the first paint shows the
-  photograph immediately.
+  outlined alternate. There is no hero photograph and no `<link rel="preload">`
+  image hint. If a real photograph is added in future, move this note to
+  `docs/roadmap.md` until implemented.
 - **Story** section with a three-paragraph introduction covering where
   the biltong is cured and what makes it distinct.
 - **Testimonials band** — if one or more testimonials are published in
@@ -235,7 +236,7 @@ the repo) — see [`roadmap.md`](./roadmap.md).
 
 ## Content management (Sanity Studio)
 
-- **Studio package** (`studio/`) — a standalone Sanity Studio v3 app that the
+- **Studio package** (`studio/`) — a standalone Sanity Studio v5 app that the
   shop owner logs into to manage products and orders. Runs locally during
   development and is deployed to a free `*.sanity.studio` URL for production
   use.

@@ -14,7 +14,7 @@ and GitHub Actions workflows for CI/CD:
 - `backend/` — Hono app, written once and deployed two ways: as a local Node HTTP
   server for development and as an AWS Lambda handler for production. Bundled
   with esbuild.
-- `studio/` — Sanity Studio v3, a dashboard where the shop owner manages products
+- `studio/` — Sanity Studio v5, a dashboard where the shop owner manages products
   (name, price, photos, availability). Runs locally or as a free hosted app at
   `*.sanity.studio`.
 - `infra/` — Terraform module that provisions all AWS resources (S3, CloudFront,
@@ -209,7 +209,7 @@ difference is how requests reach the app.
   it, looks up product prices in Sanity, generates a reference `TB-YYMMDD-XXXXXX`,
   **creates a Sanity `order` document**, sends the owner notification email,
   creates a Stripe Checkout session, and returns the hosted session URL:
-  `{ success, ref, checkoutUrl }`
+  `{ success, ref, stripe: { sessionId, url } }`
 - `GET /orders/:ref?email=…` — customer-facing order lookup. Queries Sanity
   by `orderRef`, verifies the provided email matches the stored email, and
   returns a sanitised subset (no internal notes, no phone, no shipping
@@ -276,7 +276,7 @@ bundle.
 
 ## Studio
 
-Sanity Studio v3, configured in `studio/sanity.config.ts`. It is a standalone React
+Sanity Studio v5, configured in `studio/sanity.config.ts`. It is a standalone React
 application, not part of the SvelteKit app. It runs in one of three places:
 
 - **Locally** via `pnpm studio dev` on `http://localhost:3333`. Used during
@@ -350,10 +350,10 @@ Backend Hono app
     │ send owner notification email
     │ create Stripe Checkout session with the computed line items
     ▼
-Returns { success, ref, checkoutUrl }
+Returns { success, ref, stripe: { sessionId, url } }
     │
     ▼
-Browser redirects to checkoutUrl → customer lands on Stripe Checkout
+Browser redirects to stripe.url → customer lands on Stripe Checkout
     │
     ▼
 Customer pays on Stripe's hosted page
