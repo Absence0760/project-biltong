@@ -188,7 +188,7 @@ A new document appears under **Orders** in the studio. Change its status
 
 **5. Open the tracking link**
 
-The customer email contains a `/track?token=…` link. Open it — the track
+The customer email contains a `/track?ref=TB-…&email=…` link. Open it — the track
 page should show the current order status.
 
 **6. (Optional) Test the status-change email**
