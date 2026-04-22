@@ -1,9 +1,13 @@
 <script lang="ts">
 	import '../app.css';
+	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import Cart from '$lib/Cart.svelte';
 	import { cart } from '$lib/cartStore.svelte';
+
+	type Props = { children?: Snippet };
+	let { children }: Props = $props();
 
 	const nav = [
 		{ href: '/', label: 'Home' },
@@ -14,9 +18,9 @@
 
 	const siteUrl = PUBLIC_SITE_URL?.replace(/\/$/, '') ?? '';
 	const ogImage = `${siteUrl}/og-default.svg`;
-	$: canonicalUrl = `${siteUrl}${page.url.pathname}`;
+	const canonicalUrl = $derived(`${siteUrl}${page.url.pathname}`);
 
-	let menuOpen = false;
+	let menuOpen = $state(false);
 
 	function closeMenu() {
 		menuOpen = false;
@@ -29,7 +33,7 @@
 
 </script>
 
-<svelte:window on:keydown={onKeydown} />
+<svelte:window onkeydown={onKeydown} />
 
 <svelte:head>
 	<!-- Site-wide Open Graph defaults.
@@ -59,7 +63,7 @@
 	<div class="container header-inner">
 		<button
 			class="menu-btn"
-			on:click={() => (menuOpen = !menuOpen)}
+			onclick={() => (menuOpen = !menuOpen)}
 			aria-label={menuOpen ? 'Close menu' : 'Open menu'}
 			aria-expanded={menuOpen}
 			aria-controls="mobile-nav"
@@ -92,7 +96,7 @@
 					{/each}
 				</ul>
 			</nav>
-			<button class="cart-btn" on:click={() => cart.openPanel()} aria-label="Open cart">
+			<button class="cart-btn" onclick={() => cart.openPanel()} aria-label="Open cart">
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 					<circle cx="9" cy="21" r="1"></circle>
 					<circle cx="20" cy="21" r="1"></circle>
@@ -114,8 +118,8 @@
 	{#if menuOpen}
 		<div
 			class="mobile-nav-backdrop"
-			on:click={closeMenu}
-			on:keydown={(e) => e.key === 'Escape' && closeMenu()}
+			onclick={closeMenu}
+			onkeydown={(e) => e.key === 'Escape' && closeMenu()}
 			role="button"
 			tabindex="-1"
 			aria-label="Close menu"
@@ -135,7 +139,7 @@
 								role="menuitem"
 								class:active={page.url.pathname === item.href ||
 									(item.href !== '/' && page.url.pathname.startsWith(item.href))}
-								on:click={closeMenu}
+								onclick={closeMenu}
 							>
 								{item.label}
 							</a>
@@ -148,7 +152,7 @@
 </header>
 
 <main>
-	<slot />
+	{@render children?.()}
 </main>
 
 <Cart open={cart.panelOpen} onclose={() => cart.closePanel()} />

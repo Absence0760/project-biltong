@@ -7,9 +7,9 @@
 
 	const apiUrl = PUBLIC_API_URL;
 
-	let products: Product[] = [];
-	let productsLoading = true;
-	let productsError: string | null = null;
+	let products = $state<Product[]>([]);
+	let productsLoading = $state(true);
+	let productsError = $state<string | null>(null);
 	const skeletonCount = 6;
 
 	function productMainImage(product: Product): string | null {
@@ -145,7 +145,7 @@
 							<Button
 								variant="outlined"
 								size="sm"
-								on:click={() => addToCart(product)}
+								onclick={() => addToCart(product)}
 								disabled={product.priceZar == null}
 							>
 								Add to order

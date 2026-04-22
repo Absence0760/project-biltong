@@ -38,8 +38,6 @@ function defineConfig() {
 function warningFilter(warning) {
 	const ignorePatterns = [/node_modules/, /\.svelte-kit/];
 	const ignoredWarningCodes = [
-		"svelte_component_deprecated",
-		"slot_element_deprecated",
 		"a11y_no_noninteractive_tabindex",
 		"css_unused_selector",
 	];

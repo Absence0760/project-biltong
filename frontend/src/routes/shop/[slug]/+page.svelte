@@ -8,13 +8,13 @@
 
 	const apiUrl = PUBLIC_API_URL;
 
-	let product: Product | null = null;
-	let loading = true;
-	let notFound = false;
-	let error: string | null = null;
-	let activePhotoIndex = 0;
+	let product = $state<Product | null>(null);
+	let loading = $state(true);
+	let notFound = $state(false);
+	let error = $state<string | null>(null);
+	let activePhotoIndex = $state(0);
 
-	$: slug = page.params.slug ?? '';
+	const slug = $derived(page.params.slug ?? '');
 
 	function addToCart() {
 		if (!product) return;
@@ -102,7 +102,7 @@
 											type="button"
 											class="gallery__thumb"
 											class:is-active={i === activePhotoIndex}
-											on:click={() => (activePhotoIndex = i)}
+											onclick={() => (activePhotoIndex = i)}
 											role="tab"
 											aria-selected={i === activePhotoIndex}
 											aria-label={`View photo ${i + 1}`}
@@ -135,7 +135,7 @@
 					{/if}
 
 					<div class="info__cta">
-						<Button variant="primary" on:click={addToCart} disabled={product.priceZar == null}>
+						<Button variant="primary" onclick={addToCart} disabled={product.priceZar == null}>
 							Add to order
 						</Button>
 						<a class="info__back" href="/shop">← Back to shop</a>

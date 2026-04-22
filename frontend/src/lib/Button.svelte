@@ -13,15 +13,32 @@
 	than re-inventing the styles locally.
 -->
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	type Variant = 'primary' | 'outlined' | 'ghost' | 'ghost-primary';
 	type Size = 'md' | 'sm';
 
-	export let variant: Variant = 'primary';
-	export let size: Size = 'md';
-	export let href: string | undefined = undefined;
-	export let type: 'button' | 'submit' = 'button';
-	export let disabled = false;
-	export let ariaLabel: string | undefined = undefined;
+	type Props = {
+		variant?: Variant;
+		size?: Size;
+		href?: string;
+		type?: 'button' | 'submit';
+		disabled?: boolean;
+		ariaLabel?: string;
+		onclick?: (e: MouseEvent) => void;
+		children?: Snippet;
+	};
+
+	let {
+		variant = 'primary',
+		size = 'md',
+		href = undefined,
+		type = 'button',
+		disabled = false,
+		ariaLabel = undefined,
+		onclick = undefined,
+		children
+	}: Props = $props();
 </script>
 
 {#if href}
@@ -29,9 +46,9 @@
 		class="btn btn--{variant} btn--{size}"
 		{href}
 		aria-label={ariaLabel}
-		on:click
+		{onclick}
 	>
-		<slot />
+		{@render children?.()}
 	</a>
 {:else}
 	<button
@@ -39,9 +56,9 @@
 		{type}
 		{disabled}
 		aria-label={ariaLabel}
-		on:click
+		{onclick}
 	>
-		<slot />
+		{@render children?.()}
 	</button>
 {/if}
 

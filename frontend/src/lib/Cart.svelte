@@ -3,18 +3,22 @@
 	import { formatPrice } from './sanity';
 	import { PUBLIC_API_URL } from '$env/static/public';
 
-	export let open = false;
-	export let onclose: () => void;
+	type Props = {
+		open?: boolean;
+		onclose: () => void;
+	};
 
-	let name = '';
-	let email = '';
-	let phone = '';
-	let address = '';
-	let notes = '';
-	let website = '';
-	let submitting = false;
-	let redirecting = false;
-	let error: string | null = null;
+	let { open = false, onclose }: Props = $props();
+
+	let name = $state('');
+	let email = $state('');
+	let phone = $state('');
+	let address = $state('');
+	let notes = $state('');
+	let website = $state('');
+	let submitting = $state(false);
+	let redirecting = $state(false);
+	let error = $state<string | null>(null);
 
 	function handleBackdropClick(e: MouseEvent) {
 		if (e.target === e.currentTarget) onclose();
@@ -92,15 +96,15 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown} />
 
 {#if open}
-	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-	<div class="backdrop" on:click={handleBackdropClick}>
+	<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+	<div class="backdrop" onclick={handleBackdropClick}>
 		<aside class="panel">
 			<header class="panel-header">
 				<h2>Your order</h2>
-				<button class="close-btn" on:click={onclose} aria-label="Close cart">
+				<button class="close-btn" onclick={onclose} aria-label="Close cart">
 					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
 						<line x1="18" y1="6" x2="6" y2="18"></line>
 						<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -132,12 +136,12 @@
 								<span class="item-name">{item.name}</span>
 							</div>
 							<div class="item-controls">
-								<button class="qty-btn" on:click={() => cart.decrement(item.productId)} aria-label="Decrease quantity">&minus;</button>
+								<button class="qty-btn" onclick={() => cart.decrement(item.productId)} aria-label="Decrease quantity">&minus;</button>
 								<span class="qty">{item.quantity}</span>
-								<button class="qty-btn" on:click={() => cart.increment(item.productId)} aria-label="Increase quantity">+</button>
+								<button class="qty-btn" onclick={() => cart.increment(item.productId)} aria-label="Increase quantity">+</button>
 							</div>
 							<span class="item-price">{formatPrice(item.price * item.quantity)}</span>
-							<button class="remove-btn" on:click={() => cart.remove(item.productId)} aria-label="Remove {item.name}">
+							<button class="remove-btn" onclick={() => cart.remove(item.productId)} aria-label="Remove {item.name}">
 								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
 									<line x1="18" y1="6" x2="6" y2="18"></line>
 									<line x1="6" y1="6" x2="18" y2="18"></line>
@@ -183,7 +187,7 @@
 					<textarea id="cart-notes" rows="2" placeholder="Any special requests…" bind:value={notes}></textarea>
 				</div>
 
-				<button class="checkout-btn" on:click={handleCheckout} disabled={submitting}>
+				<button class="checkout-btn" onclick={handleCheckout} disabled={submitting}>
 					{#if submitting}
 						Processing…
 					{:else}
