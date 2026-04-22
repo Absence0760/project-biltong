@@ -172,6 +172,31 @@
 				<a href="/contact">Contact</a>
 			</p>
 			<p class="muted">Thong Biltong — cheekily cured.</p>
+			<svg
+				class="usa-badge"
+				viewBox="0 0 68 32"
+				role="img"
+				aria-label="Made in the USA"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<rect x="0" y="0" width="68" height="32" fill="#ffffff" stroke="#2a1a10" stroke-width="2" rx="2" />
+				<rect x="0" y="0" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="4.92" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="9.85" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="14.77" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="19.69" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="24.62" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="29.54" width="68" height="2.46" fill="#b22234" />
+				<rect x="0" y="0" width="27" height="17" fill="#3c3b6e" />
+				<g fill="#ffffff">
+					<circle cx="3.5" cy="3" r="0.8" /><circle cx="8.5" cy="3" r="0.8" /><circle cx="13.5" cy="3" r="0.8" /><circle cx="18.5" cy="3" r="0.8" /><circle cx="23.5" cy="3" r="0.8" />
+					<circle cx="6" cy="6.5" r="0.8" /><circle cx="11" cy="6.5" r="0.8" /><circle cx="16" cy="6.5" r="0.8" /><circle cx="21" cy="6.5" r="0.8" />
+					<circle cx="3.5" cy="10" r="0.8" /><circle cx="8.5" cy="10" r="0.8" /><circle cx="13.5" cy="10" r="0.8" /><circle cx="18.5" cy="10" r="0.8" /><circle cx="23.5" cy="10" r="0.8" />
+					<circle cx="6" cy="13.5" r="0.8" /><circle cx="11" cy="13.5" r="0.8" /><circle cx="16" cy="13.5" r="0.8" /><circle cx="21" cy="13.5" r="0.8" />
+				</g>
+				<rect x="2" y="18" width="64" height="11" fill="#ffffff" opacity="0.92" stroke="#2a1a10" stroke-width="0.6" rx="1.5" />
+				<text x="34" y="25.8" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="6.5" font-weight="bold" fill="#2a1a10">MADE IN THE USA</text>
+			</svg>
 		</div>
 	</div>
 </footer>
@@ -456,5 +481,12 @@
 	.site-footer .muted {
 		color: #b7c0ae;
 		font-style: italic;
+	}
+
+	.usa-badge {
+		display: block;
+		width: 140px;
+		height: auto;
+		margin: var(--space-2) auto 0;
 	}
 </style>
