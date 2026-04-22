@@ -31,6 +31,10 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+      # id-token: write is required by anthropics/claude-code-action@v1 for
+      # Anthropic OAuth token verification when claude_code_oauth_token is
+      # used. The action uses the OIDC token to confirm the workflow identity
+      # to Anthropic's backend. Removing it breaks the action's auth step.
       id-token: write
     steps:
       # Defense in depth — if the if: gate above is ever removed by mistake,
