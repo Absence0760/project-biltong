@@ -215,10 +215,26 @@
 				</footer>
 			</article>
 		{/if}
+
+		<aside class="contact-note">
+			<h2>Questions?</h2>
+			<p>
+				Can't find your order, spotted something odd, or want to chat about biltong in general?
+				Email us at
+				<a href="mailto:questions@thongbiltong.com">questions@thongbiltong.com</a>
+				and we'll get back to you.
+			</p>
+		</aside>
 	</div>
 </section>
 
 <style>
+	/* Force the track section to fill at least the viewport (minus header+footer)
+	   so the leaf-dark footer sits below the fold on tall screens. */
+	section {
+		min-height: calc(100vh - 260px);
+	}
+
 	.narrow {
 		max-width: 680px;
 	}
@@ -415,5 +431,23 @@
 
 	.order-meta p {
 		margin: 0.15rem 0;
+	}
+
+	.contact-note {
+		margin-top: var(--space-4);
+		padding: var(--space-3);
+		background: var(--color-surface);
+		border: 1px solid var(--color-rule);
+		border-left: 4px solid var(--color-bark);
+	}
+
+	.contact-note h2 {
+		margin: 0 0 var(--space-1);
+		font-size: 1.2rem;
+	}
+
+	.contact-note p {
+		margin: 0;
+		color: var(--color-ink-soft);
 	}
 </style>

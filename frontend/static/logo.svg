@@ -24,10 +24,10 @@
   <rect x="104" y="138" width="14" height="34" rx="5" fill="#c9a27a" stroke="#2a1a10" stroke-width="3"/>
   <ellipse cx="111" cy="174" rx="10" ry="5" fill="#2a1a10"/>
 
-  <!-- udders (pink bag with two teats, hanging from belly between the two back legs, below the thong tip) -->
-  <ellipse cx="129" cy="148" rx="6" ry="4" fill="#e8a5a0" stroke="#2a1a10" stroke-width="2"/>
-  <rect x="125.5" y="150.5" width="3" height="5" rx="1.4" fill="#e8a5a0" stroke="#2a1a10" stroke-width="1.5"/>
-  <rect x="130.5" y="150.5" width="3" height="5" rx="1.4" fill="#e8a5a0" stroke="#2a1a10" stroke-width="1.5"/>
+  <!-- udders (pink bag with two teats; top edge hugs the body's bottom curve at x=123-135 so the udder reads as part of the silhouette) -->
+  <path d="M123 143 Q129 142 135 139 Q137 143 134 148 Q129 150 124 148 Q121 143 123 143 Z" fill="#e8a5a0" stroke="#2a1a10" stroke-width="2" stroke-linejoin="round"/>
+  <rect x="125.5" y="149" width="3" height="5" rx="1.4" fill="#e8a5a0" stroke="#2a1a10" stroke-width="1.5"/>
+  <rect x="130.5" y="149" width="3" height="5" rx="1.4" fill="#e8a5a0" stroke="#2a1a10" stroke-width="1.5"/>
 
   <!-- butt crack (at the rear, between the cheeks) -->
   <path d="M129 98 Q130 104 129 110" fill="none" stroke="#8a5a2a" stroke-width="2" stroke-linecap="round" opacity="0.7"/>

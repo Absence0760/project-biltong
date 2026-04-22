@@ -48,7 +48,7 @@ export function imageUrl(source: SanityImageSource, width?: number): string | nu
 	return img.url();
 }
 
-export function formatPrice(priceZar: number | null): string {
-	if (priceZar == null) return 'Price on enquiry';
-	return `R ${priceZar.toLocaleString('en-ZA')}`;
+export function formatPrice(price: number | null): string {
+	if (price == null) return 'Price on enquiry';
+	return `$${price.toLocaleString('en-US')}`;
 }

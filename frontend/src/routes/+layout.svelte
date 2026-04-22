@@ -12,8 +12,7 @@
 	const nav = [
 		{ href: '/', label: 'Home' },
 		{ href: '/shop', label: 'Shop' },
-		{ href: '/about', label: 'About' },
-		{ href: '/contact', label: 'Contact' }
+		{ href: '/track', label: 'Track order' }
 	];
 
 	const siteUrl = PUBLIC_SITE_URL?.replace(/\/$/, '') ?? '';
@@ -51,14 +50,6 @@
 	<meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
-<div class="announcement-bar" role="status" aria-label="Shipping and checkout information">
-	<div class="container announcement-bar__inner">
-		<span>Free shipping on orders over R500</span>
-		<span class="announcement-bar__sep" aria-hidden="true">·</span>
-		<span>Secure checkout via Stripe</span>
-	</div>
-</div>
-
 <header class="site-header">
 	<div class="container header-inner">
 		<button
@@ -76,7 +67,6 @@
 		</button>
 
 		<a class="brand" href="/" aria-label="Thong Biltong — home">
-			<img src="/logo.svg" alt="" class="brand-logo" width="36" height="36" />
 			<span>Thong Biltong</span>
 		</a>
 
@@ -169,7 +159,7 @@
 			<p class="footer-links">
 				<a href="/privacy">Privacy policy</a>
 				<span aria-hidden="true">·</span>
-				<a href="/contact">Contact</a>
+				<a href="mailto:questions@thongbiltong.com">questions@thongbiltong.com</a>
 			</p>
 			<p class="muted">Thong Biltong — cheekily cured.</p>
 			<svg
@@ -202,40 +192,6 @@
 </footer>
 
 <style>
-	.announcement-bar {
-		background: var(--color-leaf-dark);
-		color: #e8ece1;
-		font-size: 0.78rem;
-		letter-spacing: 0.08em;
-	}
-
-	.announcement-bar__inner {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.6rem;
-		padding: 0.5rem var(--space-3);
-		flex-wrap: wrap;
-		text-align: center;
-	}
-
-	.announcement-bar__sep {
-		color: rgba(232, 236, 225, 0.5);
-	}
-
-	/* Hide the centre-dot separator on very narrow viewports where the two
-	   items wrap onto separate lines — an orphaned dot between stacked
-	   lines looks broken. */
-	@media (max-width: 520px) {
-		.announcement-bar__sep {
-			display: none;
-		}
-		.announcement-bar__inner {
-			flex-direction: column;
-			gap: 0.1rem;
-		}
-	}
-
 	.site-header {
 		background: var(--color-bg);
 		border-bottom: 1px solid var(--color-rule);
@@ -262,12 +218,6 @@
 		font-size: 1.35rem;
 		color: var(--color-leaf-dark);
 		border-bottom: none;
-	}
-
-	.brand-logo {
-		display: block;
-		width: 36px;
-		height: 36px;
 	}
 
 	.desktop-nav ul {

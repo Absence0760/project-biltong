@@ -21,9 +21,9 @@
 	});
 
 	const storyParagraphs: string[] = [
-		'Thong Biltong was born around a braai and a bad joke. Our friends kept demanding "just one more strip" until the stash ran out — so we started curing more of it, then a lot more, and eventually put a cheeky mascot on the bag and called it a brand.',
-		'Every batch is air-dried low and slow in Cape Town with free-range silverside, coriander, cracked black pepper, and a splash of our house spiced vinegar. No nitrates, no shortcuts, no mystery meat.',
-		'One bite, and we reckon you\u2019ll keep your thong on but lose your manners.'
+		'Thong Biltong started with a craving in the wrong hemisphere. A South African who landed in Virginia could not find biltong that tasted like home — so he and his wife started curing their own. Friends asked for a bag, then friends-of-friends, and eventually we put a cheeky mascot on the label and called it a brand.',
+		'Every batch is still hand-cured in our home kitchen, right here in Virginia. The beef comes fresh from the local butcher down the road — proper cuts, trimmed the same week. Coriander, cracked black pepper, and our house spiced vinegar do the rest. No nitrates, no preservatives, no mystery meat.',
+		'Shipped straight from our kitchen to yours. Keep your thong on. Lose your manners.'
 	];
 
 	const promisePoints: { title: string; body: string }[] = [
@@ -40,6 +40,25 @@
 			body: 'Beef, salt, pepper, coriander, vinegar. That\u2019s it. Read the label — it\u2019s all there.'
 		}
 	];
+
+	const benefitPoints: { title: string; body: string }[] = [
+		{
+			title: 'High protein, low sugar',
+			body: 'Roughly 50% protein by weight with virtually no added sugar. Fits keto, carnivore, and the 3pm desk-slump crowd.'
+		},
+		{
+			title: 'Nothing synthetic',
+			body: 'No nitrates, no preservatives, no liquid smoke, no MSG. Air-dried the old way — five ingredients, all pronounceable.'
+		},
+		{
+			title: 'Real beef, real iron',
+			body: 'Grass-fed silverside is a natural source of iron, zinc, and B12 — no fortification, no marketing gymnastics.'
+		},
+		{
+			title: 'Shelf-stable and portable',
+			body: 'Chuck a bag in your gym kit, glove box, or hiking pack. No fridge, no crumbs, no regrets.'
+		}
+	];
 </script>
 
 <section class="hero">
@@ -53,7 +72,6 @@
 			</p>
 			<div class="hero-cta">
 				<Button href="/shop" variant="ghost-primary">Shop the cuts</Button>
-				<Button href="/about" variant="ghost">Our story</Button>
 			</div>
 		</div>
 		<div class="hero-mascot" aria-hidden="true">
@@ -85,9 +103,24 @@
 	</div>
 </section>
 
+<section class="section">
+	<div class="container">
+		<p class="eyebrow">Why biltong</p>
+		<h2>A snack that earns its keep</h2>
+		<div class="promise-grid">
+			{#each benefitPoints as point}
+				<article class="promise-card">
+					<h3>{point.title}</h3>
+					<p>{point.body}</p>
+				</article>
+			{/each}
+		</div>
+	</div>
+</section>
+
 <section class="section section--alt">
 	<div class="container">
-		<p class="eyebrow">What\u2019s in the bag</p>
+		<p class="eyebrow">What’s in the bag</p>
 		<div class="promise-grid">
 			{#each promisePoints as point}
 				<article class="promise-card">
@@ -116,23 +149,6 @@
 		</div>
 	</section>
 {/if}
-
-<section class="section">
-	<div class="container">
-		<div class="cta-grid">
-			<a class="cta-card" href="/shop">
-				<h3>Shop</h3>
-				<p>All our cuts and flavours, packed fresh and ready to post.</p>
-				<span class="cta-link">Visit shop →</span>
-			</a>
-			<a class="cta-card" href="/about">
-				<h3>About</h3>
-				<p>Meet the bull, the braai, and the cure.</p>
-				<span class="cta-link">Our story →</span>
-			</a>
-		</div>
-	</div>
-</section>
 
 <style>
 	.hero {
@@ -285,42 +301,4 @@
 		font-style: italic;
 	}
 
-	.cta-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: var(--space-3);
-	}
-
-	.cta-card {
-		display: block;
-		background: var(--color-surface);
-		border: 1px solid var(--color-rule);
-		border-radius: 4px;
-		padding: var(--space-4);
-		color: var(--color-ink);
-		transition: transform 180ms ease, box-shadow 180ms ease;
-	}
-
-	.cta-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 10px 30px rgba(42, 26, 16, 0.12);
-		border-color: var(--color-bark);
-	}
-
-	.cta-card h3 {
-		margin: 0 0 var(--space-1);
-	}
-
-	.cta-card p {
-		margin: 0 0 var(--space-2);
-		color: var(--color-ink-soft);
-	}
-
-	.cta-link {
-		font-size: 0.9rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--color-bark);
-		font-weight: 500;
-	}
 </style>

@@ -46,9 +46,9 @@ export const order = defineType({
 		}),
 		defineField({
 			name: 'amountZar',
-			title: 'Amount (ZAR)',
+			title: 'Amount (USD)',
 			type: 'number',
-			description: 'Total order amount in Rands.',
+			description: 'Total order amount in US Dollars.',
 			readOnly: true
 		}),
 		defineField({

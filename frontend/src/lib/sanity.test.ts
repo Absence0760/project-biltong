@@ -12,34 +12,32 @@ describe('formatPrice', () => {
 		expect(formatPrice(null)).toBe('Price on enquiry');
 	});
 
-	it('formats a positive number with the en-ZA locale and a leading R', () => {
+	it('formats a positive number with the en-US locale and a leading $', () => {
 		const result = formatPrice(1500);
-		expect(result).toBe(`R ${(1500).toLocaleString('en-ZA')}`);
-		expect(result.startsWith('R ')).toBe(true);
+		expect(result).toBe(`$${(1500).toLocaleString('en-US')}`);
+		expect(result.startsWith('$')).toBe(true);
 		expect(result).toContain('500');
 	});
 
-	it('formats zero as "R 0" rather than "Price on enquiry"', () => {
-		expect(formatPrice(0)).toBe('R 0');
+	it('formats zero as "$0" rather than "Price on enquiry"', () => {
+		expect(formatPrice(0)).toBe('$0');
 	});
 
 	it('formats a negative number (should not occur in prod, but must not throw)', () => {
 		const result = formatPrice(-1);
-		expect(result).toMatch(/^R /);
+		expect(result).toMatch(/^\$/);
 	});
 
-	it('formats a fractional rand amount (cents stored as a decimal)', () => {
+	it('formats a fractional dollar amount (cents stored as a decimal)', () => {
 		const result = formatPrice(0.5);
-		expect(result).toMatch(/^R /);
+		expect(result).toMatch(/^\$/);
 	});
 
-	it('uses the en-ZA thousand separator for large numbers', () => {
-		// en-ZA groups with a non-breaking space or comma depending on ICU;
-		// whichever it is, matchers here are locale-aware rather than literal.
-		const expected = `R ${(1_000_000).toLocaleString('en-ZA')}`;
+	it('uses the en-US thousand separator for large numbers', () => {
+		const expected = `$${(1_000_000).toLocaleString('en-US')}`;
 		expect(formatPrice(1_000_000)).toBe(expected);
-		// Defensive: ensure grouping actually happened and we're not seeing "R 1000000".
-		expect(formatPrice(1_000_000)).not.toBe('R 1000000');
+		// Defensive: ensure grouping actually happened and we're not seeing "$1000000".
+		expect(formatPrice(1_000_000)).not.toBe('$1000000');
 	});
 });
 
